@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMA — Brand & Digital Agency</title>
+
+<!-- FIX #20: Meta description -->
+<meta name="description" content="LUMA is a full-service creative agency turning ambitious visions into iconic digital experiences that captivate, convert, and endure.">
+<!-- FIX #21: OG / Twitter cards -->
+<meta property="og:title" content="LUMA — Brand & Digital Agency">
+<meta property="og:description" content="We craft brands that ignite movements. A full-service creative agency for ambitious companies.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://luma.studio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LUMA — Brand & Digital Agency">
+<meta name="twitter:description" content="We craft brands that ignite movements.">
+
+<!-- FIX #19: Inline SVG favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23080808'/><text x='50%25' y='54%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='900' fill='%23c8a96e'>L</text></svg>">
+
+<!-- FIX #22: crossorigin on font preconnect -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --black: #080808;
+    --white: #f7f5f2;
+    --cream: #f0ece4;
+    --accent: #c8a96e;
+    --accent2: #7c9e87;
+    --mid: #2a2a2a;
+    --text-dim: #888;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  /* FIX #2: Default cursor as safe fallback — overridden by media query */
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--sans);
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: auto;
+  }
+
+  /* FIX #26: Disable all motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .particles { display: none; }
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+
+  /* FIX #3: Custom cursor — fine-pointer (mouse) devices only */
+  .cursor, .cursor-ring { display: none; }
+  @media (pointer: fine) {
+    body { cursor: none; }
+    a, button, .service-card, .work-item, .step, .dot, .social-link { cursor: none; }
+    .cursor {
+      display: block; position: fixed;
+      width: 12px; height: 12px;
+      background: var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      display: block; position: fixed;
+      width: 40px; height: 40px;
+      border: 1px solid rgba(200,169,110,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.15s ease, height 0.15s ease;
+    }
+    body.cursor-hover .cursor { width: 20px; height: 20px; }
+    body.cursor-hover .cursor-ring { width: 60px; height: 60px; }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    background: rgba(8,8,8,0.7);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled { background: rgba(8,8,8,0.96); padding: 14px 60px; }
+  .nav-logo {
+    font-family: var(--serif); font-weight: 900; font-size: 1.6rem;
+    letter-spacing: -0.02em; color: var(--white); text-decoration: none; flex-shrink: 0;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  /* FIX #6/#7: Mobile hamburger */
+  .nav-hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; padding: 8px; z-index: 200;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--white); border-radius: 2px; transition: all 0.3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-links {
+    display: flex; gap: 40px; list-style: none; align-items: center;
+  }
+  .nav-links a {
+    color: rgba(247,245,242,0.6); text-decoration: none;
+    font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.3s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px; background: var(--accent); transition: width 0.3s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); }
+  .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+  .nav-cta {
+    background: var(--accent) !important; color: var(--black) !important;
+    padding: 10px 24px !important; border-radius: 100px; font-weight: 500;
+  }
+  .nav-cta::after { display: none !important; }
+  .nav-cta.active::after { display: none !important; }
+  .nav-cta.active { box-shadow: none; }
+  .nav-cta:hover { box-shadow: 0 0 30px rgba(200,169,110,0.4); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; position: relative; overflow: hidden;
+    padding: 120px 40px 80px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,169,110,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 80%, rgba(124,158,135,0.06) 0%, transparent 60%);
+    will-change: transform;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 32px; opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards; position: relative; z-index: 1;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(3.5rem, 9vw, 8.5rem);
+    font-weight: 900; line-height: 0.95; letter-spacing: -0.03em;
+    margin-bottom: 32px; opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
+    position: relative; z-index: 1; will-change: transform;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero > p {
+    font-size: clamp(1rem, 2vw, 1.25rem); color: rgba(247,245,242,0.55);
+    max-width: 520px; line-height: 1.75; margin-bottom: 52px;
+    opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
+    position: relative; z-index: 1;
+  }
+  .hero-actions {
+    display: flex; gap: 16px; align-items: center; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: fadeUp 0.9s 0.8s forwards; position: relative; z-index: 1;
+  }
+  /* FIX #11: type="button" on all hero buttons */
+  .btn-primary {
+    background: var(--white); color: var(--black); border: none;
+    padding: 16px 36px; border-radius: 100px;
+    font-family: var(--sans); font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .btn-primary:hover { transform: scale(1.04); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+  .btn-ghost {
+    background: transparent; color: rgba(247,245,242,0.7);
+    border: 1px solid rgba(247,245,242,0.2);
+    padding: 16px 36px; border-radius: 100px;
+    font-family: var(--sans); font-size: 0.9rem; transition: all 0.3s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-scroll-hint {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeIn 1s 1.5s forwards;
+  }
+  .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--accent), transparent); animation: scrollPulse 2s infinite; }
+  .hero-scroll-hint span { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); }
+
+  /* MARQUEE — FIX #32: pause on hover */
+  .marquee-section {
+    padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden; background: rgba(255,255,255,0.01);
+  }
+  .marquee-section:hover .marquee-track { animation-play-state: paused; }
+  .marquee-track { display: flex; gap: 60px; animation: marquee 25s linear infinite; white-space: nowrap; }
+  .marquee-item {
+    font-family: var(--serif); font-style: italic; font-size: 1.1rem;
+    color: rgba(247,245,242,0.25); flex-shrink: 0; display: flex; align-items: center; gap: 60px;
+  }
+  .marquee-dot { width: 4px; height: 4px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+  /* SECTIONS */
+  .section { padding: 140px 60px; }
+  .section-tag { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
+
+  /* ABOUT */
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; max-width: 1200px; margin: 0 auto; }
+  .about h2 { font-family: var(--serif); font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 32px; }
+  .about h2 em { font-style: italic; color: var(--accent); }
+  .about p { color: rgba(247,245,242,0.55); line-height: 1.9; margin-bottom: 20px; font-size: 1.05rem; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+  .stat-num { font-family: var(--serif); font-size: 3rem; font-weight: 900; color: var(--white); line-height: 1; margin-bottom: 8px; }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
+
+  /* FIX #15/#16: About visual — orbs scoped correctly, richer card content */
+  .about-visual { position: relative; height: 540px; max-width: 580px; }
+  .about-card { position: absolute; border-radius: 20px; overflow: hidden; }
+  .card-large {
+    width: 75%; height: 75%; top: 0; right: 0;
+    background: linear-gradient(135deg, #1a1a1a, #2a2520);
+    border: 1px solid rgba(255,255,255,0.07);
+    display: flex; flex-direction: column; justify-content: space-between; padding: 32px;
+  }
+  .card-small {
+    width: 58%; height: 45%; bottom: 0; left: 0;
+    background: linear-gradient(135deg, rgba(200,169,110,0.12), rgba(200,169,110,0.04));
+    border: 1px solid rgba(200,169,110,0.2);
+    display: flex; flex-direction: column; justify-content: space-between; padding: 28px;
+  }
+  .card-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(200,169,110,0.15); border: 1px solid rgba(200,169,110,0.3);
+    border-radius: 100px; padding: 6px 14px;
+    font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); width: fit-content;
+  }
+  .card-inner-title { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; }
+  .card-inner-sub { font-size: 0.8rem; color: var(--text-dim); }
+  .card-award-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .award-pill { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(247,245,242,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; padding: 4px 10px; }
+  /* FIX #16: Orbs use class-based position, NO inline style override */
+  .orb { position: absolute; border-radius: 50%; filter: blur(28px); animation: orbFloat 6s ease-in-out infinite; pointer-events: none; }
+  .orb1 { width: 90px; height: 90px; background: rgba(200,169,110,0.3); top: 18%; right: 12%; animation-delay: 0s; }
+  .orb2 { width: 65px; height: 65px; background: rgba(124,158,135,0.25); top: 48%; right: 38%; animation-delay: 2s; }
+  .globe-icon { font-size: 2rem; margin-bottom: 8px; }
+
+  /* SERVICES */
+  .services { max-width: 1200px; margin: 0 auto; }
+  .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 80px; gap: 40px; }
+  .services-header h2 { font-family: var(--serif); font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 700; letter-spacing: -0.02em; max-width: 500px; line-height: 1.1; }
+  .services-header h2 em { font-style: italic; color: var(--accent); }
+  .services-header p { color: var(--text-dim); max-width: 280px; line-height: 1.7; text-align: right; flex-shrink: 0; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .service-card {
+    padding: 48px 40px 80px; background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+  }
+  .service-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-num { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 32px; font-family: var(--sans); }
+  .service-icon { width: 48px; height: 48px; margin-bottom: 28px; }
+  /* FIX #13: Each icon has its own distinct colour */
+  .service-icon svg { width: 100%; height: 100%; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .service-card:nth-child(1) .service-icon svg { stroke: #c8a96e; }
+  .service-card:nth-child(2) .service-icon svg { stroke: #7c9e87; }
+  .service-card:nth-child(3) .service-icon svg { stroke: #8ba3c8; }
+  .service-card:nth-child(4) .service-icon svg { stroke: #c87c9e; }
+  .service-card:nth-child(5) .service-icon svg { stroke: #d4a84b; }
+  .service-card:nth-child(6) .service-icon svg { stroke: #9ec87c; }
+  .service-card h3 { font-family: var(--serif); font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .service-card > p { color: rgba(247,245,242,0.45); font-size: 0.92rem; line-height: 1.8; }
+  .service-arrow { position: absolute; bottom: 40px; right: 40px; width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+  .service-card:hover .service-arrow { border-color: var(--accent); background: var(--accent); }
+  .service-arrow svg { width: 14px; height: 14px; stroke: rgba(247,245,242,0.6); fill: none; stroke-linecap: round; transition: stroke 0.3s; }
+  .service-card:hover .service-arrow svg { stroke: var(--black); }
+
+  /* WORK — FIX #10: proper CSS grid, no flex wrapper div */
+  .work { max-width: 1200px; margin: 0 auto; }
+  .work-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 64px; gap: 24px; }
+  .work-header h2 { font-family: var(--serif); font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 700; letter-spacing: -0.02em; }
+  .work-view-all {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid rgba(200,169,110,0.3); padding-bottom: 4px;
+    transition: gap 0.3s, border-color 0.3s; flex-shrink: 0;
+  }
+  .work-view-all:hover { gap: 14px; border-color: var(--accent); }
+  .work-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 24px; }
+  .work-item { position: relative; border-radius: 16px; overflow: hidden; background: #111; min-height: 280px; }
+  .work-item.tall { grid-row: span 2; }
+  .work-item-bg { position: absolute; inset: 0; transition: transform 0.6s ease; will-change: transform; }
+  .work-item:hover .work-item-bg { transform: scale(1.06); }
+  .work-item-overlay {
+    position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 60%);
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 36px; transition: background 0.3s;
+  }
+  .work-item:hover .work-item-overlay { background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 60%); }
+  .work-tag { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .work-title { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+  .work-sub { font-size: 0.85rem; color: rgba(247,245,242,0.5); }
+  .bg1 { background: linear-gradient(135deg, #1a1210, #2d1f0e, #1a1210); }
+  .bg2 { background: linear-gradient(135deg, #0d1a15, #152d1f, #0d1a15); }
+  .bg3 { background: linear-gradient(135deg, #0d1020, #1a1535, #0d1020); }
+  .work-shape { position: absolute; border-radius: 50%; filter: blur(40px); }
+  /* FIX #12: Richer browser-frame mockups inside cards */
+  .work-mockup { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 58%; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); padding: 8px; transition: transform 0.6s ease; }
+  .work-item:hover .work-mockup { transform: translateX(-50%) translateY(-6px); }
+  .mockup-bar { display: flex; gap: 5px; margin-bottom: 7px; }
+  .mockup-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .mockup-screen { background: rgba(255,255,255,0.06); border-radius: 4px; height: 72px; display: flex; flex-direction: column; padding: 10px; gap: 7px; }
+  .mockup-line { background: rgba(255,255,255,0.1); border-radius: 2px; height: 5px; }
+
+  /* PROCESS — FIX #16: WCAG-compliant text contrast */
+  .process-section { background: var(--cream); color: var(--black); }
+  .process { max-width: 1200px; margin: 0 auto; }
+  .process .section-tag { color: #8a6a30; }
+  .process h2 { font-family: var(--serif); font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 80px; max-width: 600px; line-height: 1.1; }
+  .process h2 em { font-style: italic; color: #8a6a30; }
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; }
+  .step { position: relative; padding-top: 48px; border-top: 1px solid rgba(0,0,0,0.12); transition: transform 0.3s; }
+  .step:hover { transform: translateY(-8px); }
+  .step-num { font-family: var(--serif); font-size: 3.5rem; font-weight: 900; color: rgba(0,0,0,0.08); line-height: 1; margin-bottom: 20px; transition: color 0.3s; }
+  .step:hover .step-num { color: rgba(138,106,48,0.18); }
+  .step h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 700; margin-bottom: 14px; color: #111; }
+  /* FIX #16: Darkened from 0.55 to 0.68 opacity — passes WCAG AA on cream */
+  .step p { font-size: 0.9rem; color: rgba(8,8,8,0.68); line-height: 1.8; }
+  .step-connector { position: absolute; top: -1px; right: 0; width: 50%; height: 1px; background: linear-gradient(90deg, rgba(138,106,48,0.5), transparent); }
+
+  /* TEAM (FIX #31: new differentiator section) */
+  .team-section { max-width: 1200px; margin: 0 auto; }
+  .team-section h2 { font-family: var(--serif); font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.1; }
+  .team-section h2 em { font-style: italic; color: var(--accent); }
+  .team-section > p { color: rgba(247,245,242,0.5); margin-bottom: 64px; max-width: 500px; line-height: 1.8; }
+  .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .team-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px 28px; transition: transform 0.3s, border-color 0.3s; }
+  .team-card:hover { transform: translateY(-6px); border-color: rgba(200,169,110,0.2); }
+  .team-avatar { width: 60px; height: 60px; border-radius: 50%; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--black); }
+  .team-name { font-family: var(--serif); font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+  .team-role { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+  .team-bio { font-size: 0.85rem; color: rgba(247,245,242,0.45); line-height: 1.7; }
+
+  /* TESTIMONIALS */
+  .testimonials { max-width: 900px; margin: 0 auto; text-align: center; }
+  .testimonials .section-tag { margin-bottom: 24px; }
+  .testimonials h2 { font-family: var(--serif); font-size: clamp(2rem, 3.5vw, 3.5rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 80px; line-height: 1.2; }
+  .testimonials h2 em { font-style: italic; color: var(--accent); }
+  .testimonial-carousel { position: relative; }
+  .testimonial-slide { display: none; animation: fadeIn 0.5s forwards; }
+  .testimonial-slide.active { display: block; }
+  .testimonial-quote { font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 2rem); font-style: italic; line-height: 1.6; color: rgba(247,245,242,0.85); margin-bottom: 48px; }
+  .testimonial-author { display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .author-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 1.1rem; color: var(--black); flex-shrink: 0; }
+  .author-name { font-weight: 500; margin-bottom: 2px; }
+  .author-role { font-size: 0.8rem; color: var(--text-dim); }
+  .carousel-dots { display: flex; gap: 8px; justify-content: center; margin-top: 56px; }
+  /* FIX #10: Dots are proper <button> elements */
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.3s; border: none; padding: 0; }
+  .dot.active { background: var(--accent); width: 24px; border-radius: 3px; }
+
+  /* CTA — FIX #30: Expanded contact form */
+  .cta-section { text-align: center; position: relative; overflow: hidden; }
+  .cta-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(200,169,110,0.08) 0%, transparent 70%); }
+  .cta-inner { position: relative; max-width: 800px; margin: 0 auto; }
+  .cta-section h2 { font-family: var(--serif); font-size: clamp(3rem, 6vw, 6rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1; margin-bottom: 32px; }
+  .cta-section h2 em { font-style: italic; color: var(--accent); }
+  .cta-inner > p { color: rgba(247,245,242,0.5); font-size: 1.1rem; line-height: 1.7; margin-bottom: 52px; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .contact-form { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-field { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 20px; display: flex; flex-direction: column; gap: 4px; transition: border-color 0.3s; }
+  .form-field:focus-within { border-color: rgba(200,169,110,0.4); }
+  .form-field label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+  .form-field input, .form-field select, .form-field textarea { background: none; border: none; outline: none; color: var(--white); font-family: var(--sans); font-size: 0.9rem; resize: none; }
+  .form-field input::placeholder, .form-field textarea::placeholder { color: rgba(247,245,242,0.25); }
+  .form-field select { color: rgba(247,245,242,0.7); }
+  .form-field select option { background: #1a1a1a; color: var(--white); }
+  .form-textarea { min-height: 110px; }
+  .form-submit { background: var(--accent); color: var(--black); border: none; padding: 16px 36px; border-radius: 100px; font-family: var(--sans); font-size: 0.9rem; font-weight: 500; width: 100%; transition: transform 0.3s, box-shadow 0.3s; margin-top: 4px; }
+  .form-submit:hover { transform: scale(1.02); box-shadow: 0 12px 36px rgba(200,169,110,0.3); }
+  .form-error { color: #e87c7c; font-size: 0.78rem; margin-top: 2px; display: none; }
+  .form-error.visible { display: block; }
+  .form-success { text-align: center; padding: 48px 32px; background: rgba(124,158,135,0.08); border: 1px solid rgba(124,158,135,0.2); border-radius: 16px; display: none; }
+  .form-success.visible { display: block; }
+  .form-success h3 { font-family: var(--serif); font-size: 1.6rem; margin-bottom: 12px; color: var(--accent2); }
+  .form-success p { color: rgba(247,245,242,0.6); line-height: 1.7; }
+
+  /* FOOTER */
+  footer { padding: 80px 60px 48px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+  .footer-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 900; color: var(--white); margin-bottom: 16px; }
+  .footer-logo span { color: var(--accent); }
+  .footer-brand p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.8; max-width: 240px; }
+  .footer-col h4 { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 24px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .footer-col a { text-decoration: none; color: rgba(247,245,242,0.5); font-size: 0.9rem; transition: color 0.3s; }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 32px; flex-wrap: wrap; gap: 16px; }
+  .footer-bottom p { color: var(--text-dim); font-size: 0.8rem; }
+  .footer-social { display: flex; gap: 16px; }
+  .social-link { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s; }
+  .social-link:hover { border-color: var(--accent); background: rgba(200,169,110,0.1); }
+  /* FIX #18: SVGs use stroke not fill for consistency */
+  .social-link svg { width: 15px; height: 15px; fill: none; stroke: rgba(247,245,242,0.6); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  @keyframes orbFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-14px) scale(1.08); } }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Particles */
+  .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .particle { position: absolute; background: rgba(200,169,110,0.4); border-radius: 50%; animation: particleFloat linear infinite; will-change: transform; }
+  @keyframes particleFloat {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100px) scale(1); opacity: 0; }
+  }
+
+  /* ===== FIX #5/#6: RESPONSIVE BREAKPOINTS ===== */
+  @media (max-width: 1024px) {
+    .about { grid-template-columns: 1fr; gap: 60px; }
+    .about-visual { height: 380px; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+  }
+
+  @media (max-width: 768px) {
+    .section { padding: 80px 24px; }
+    nav { padding: 18px 24px; }
+    nav.scrolled { padding: 12px 24px; }
+
+    .nav-hamburger { display: flex; }
+    .nav-links {
+      display: none; position: fixed; inset: 0;
+      background: rgba(8,8,8,0.98); backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 32px; z-index: 150;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { font-size: 1.2rem; }
+    .nav-cta { padding: 14px 36px !important; font-size: 1rem !important; }
+
+    .hero { padding: 100px 24px 60px; }
+    .hero h1 { font-size: clamp(2.8rem, 12vw, 5rem); }
+    .hero-actions { flex-direction: column; width: 100%; }
+    .btn-primary, .btn-ghost { width: 100%; }
+
+    .about { grid-template-columns: 1fr; }
+    .about-visual { height: 320px; }
+    .card-large { width: 82%; }
+    .card-small { width: 66%; }
+
+    .services-header { flex-direction: column; align-items: flex-start; }
+    .services-header p { text-align: left; max-width: 100%; }
+    .services-grid { grid-template-columns: 1fr; }
+
+    .work-grid { grid-template-columns: 1fr; }
+    .work-item.tall { grid-row: span 1; min-height: 280px; }
+    .work-header { flex-direction: column; align-items: flex-start; }
+
+    .process-steps { grid-template-columns: 1fr; gap: 28px; }
+    .step-connector { display: none; }
+
+    .team-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .team-card { padding: 24px 20px; }
+
+    .testimonial-quote { font-size: 1.2rem; }
+
+    .form-row { grid-template-columns: 1fr; }
+    .cta-inner > p { margin-bottom: 32px; }
+
+    .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+    footer { padding: 60px 24px 36px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: clamp(2.2rem, 11vw, 3.5rem); }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .work-item { min-height: 220px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<!-- FIX #8: nav with aria -->
+<nav id="mainNav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="LUMA – home">LUM<span>A</span></a>
+  <button class="nav-hamburger" id="hamburger" type="button" aria-label="Open navigation menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks" role="list">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact" class="nav-cta">Start a Project</a></li>
+  </ul>
+</nav>
+
+<!-- FIX #28: <main> landmark -->
+<main>
+
+<!-- HERO -->
+<section class="hero" aria-labelledby="heroHeading">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="particles" id="particles" aria-hidden="true"></div>
+  <div class="hero-eyebrow">Brand · Strategy · Digital Experience</div>
+  <h1 id="heroHeading">We craft brands<br>that <em>ignite</em><br>movements</h1>
+  <p>LUMA is a full-service creative agency turning ambitious visions into iconic digital experiences that captivate, convert, and endure.</p>
+  <div class="hero-actions">
+    <button type="button" class="btn-primary" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">View Our Work</button>
+    <button type="button" class="btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Start a Project</button>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- MARQUEE — FIX #32: aria-hidden, pauses on hover via CSS -->
+<div class="marquee-section" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Brand Strategy <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Visual Identity <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Digital Campaigns <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Web Design <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Motion & Film <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Content Creation <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Brand Strategy <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Visual Identity <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Digital Campaigns <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Web Design <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Motion & Film <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Content Creation <span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about" aria-labelledby="aboutHeading">
+  <div class="about">
+    <div>
+      <div class="section-tag reveal">About LUMA</div>
+      <h2 id="aboutHeading" class="reveal reveal-delay-1">Where <em>vision</em><br>becomes legacy</h2>
+      <p class="reveal reveal-delay-2">We are architects of brand narratives — a collective of strategists, designers, and storytellers united by a singular obsession: making brands that matter.</p>
+      <p class="reveal reveal-delay-2">Since 2015, we've partnered with forward-thinking companies to build identities that don't just communicate — they resonate deeply and drive measurable growth.</p>
+      <div class="stat-grid reveal reveal-delay-3">
+        <div class="stat-item"><div class="stat-num">12<span>+</span></div><div class="stat-label">Years of Excellence</div></div>
+        <div class="stat-item"><div class="stat-num">380<span>+</span></div><div class="stat-label">Brands Transformed</div></div>
+        <div class="stat-item"><div class="stat-num">97<span>%</span></div><div class="stat-label">Client Retention</div></div>
+        <div class="stat-item"><div class="stat-num">48<span>+</span></div><div class="stat-label">Industry Awards</div></div>
+      </div>
+    </div>
+    <!-- FIX #15/#16: Richer cards, orbs in CSS not inline style -->
+    <div class="about-visual reveal reveal-delay-2" aria-hidden="true">
+      <div class="about-card card-large">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="card-badge">✦ Award Winning</div>
+        <div>
+          <div class="card-inner-title">Recognised Globally</div>
+          <div class="card-inner-sub">Creative excellence across every continent</div>
+          <div class="card-award-row">
+            <span class="award-pill">Cannes Lions</span>
+            <span class="award-pill">D&AD</span>
+            <span class="award-pill">The One Show</span>
+            <span class="award-pill">Clio Awards</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-card card-small">
+        <div class="globe-icon">🌐</div>
+        <div>
+          <div class="card-inner-title" style="font-size:1.05rem;">Global Reach</div>
+          <div class="card-inner-sub">32 countries · 3 continents · one standard</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services" style="background:rgba(255,255,255,0.01);" aria-labelledby="servicesHeading">
+  <div class="services">
+    <div class="services-header reveal">
+      <div>
+        <div class="section-tag">What We Do</div>
+        <h2 id="servicesHeading">Creative services<br>built to <em>scale</em></h2>
+      </div>
+      <p>Every service we offer is designed to work in harmony, creating compounding brand value over time.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">01</div>
+        <div class="service-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 4L44 24L24 44L4 24Z"/><path d="M24 12v24M12 24h24"/></svg></div>
+        <h3>Brand Strategy</h3>
+        <p>Deep-dive research and positioning that carves a clear, defensible place in your market — and your customers' minds.</p>
+        <div class="service-arrow" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">02</div>
+        <div class="service-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="10"/><path d="M8 40c0-8.84 7.16-16 16-16s16 7.16 16 16"/></svg></div>
+        <h3>Visual Identity</h3>
+        <p>Logo systems, typography, colour, and brand guidelines that express who you are with unmistakable clarity and beauty.</p>
+        <div class="service-arrow" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-num">03</div>
+        <div class="service-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="4" y="8" width="40" height="28" rx="3"/><path d="M16 44h16M24 36v8"/></svg></div>
+        <h3>Digital Experience</h3>
+        <p>Websites, apps, and digital platforms that blend world-class design with seamless functionality and conversion.</p>
+        <div class="service-arrow" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">04</div>
+        <div class="service-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="16"/><path d="M24 12v12l8 4"/></svg></div>
+        <h3>Campaign Strategy</h3>
+        <p>Integrated marketing campaigns that reach the right people at the right moments, driving awareness and action.</p>
+        <div class="service-arrow" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">05</div>
+        <div class="service-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><polygon points="20,6 20,42 40,24"/><rect x="8" y="6" width="6" height="36" rx="2"/></svg></div>
+        <h3>Content & Motion</h3>
+        <p>Photography, video, and animation that brings your brand to life with cinematic quality and emotional resonance.</p>
+        <div class="service-arrow" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-num">06</div>
+        <div class="service-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M6 34l10-12 8 8 10-14 8 6"/><circle cx="6" cy="34" r="3"/><circle cx="16" cy="22" r="3"/><circle cx="24" cy="30" r="3"/><circle cx="34" cy="16" r="3"/><circle cx="42" cy="22" r="3"/></svg></div>
+        <h3>Growth Marketing</h3>
+        <p>Data-driven performance marketing across paid, organic, and social channels — optimised for sustainable growth.</p>
+        <div class="service-arrow" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK — FIX #10: flat CSS grid, no flex wrapper div -->
+<section class="section" id="work" aria-labelledby="workHeading">
+  <div class="work">
+    <div class="work-header">
+      <div>
+        <div class="section-tag reveal">Selected Work</div>
+        <h2 id="workHeading" class="reveal reveal-delay-1">Brands we've<br>brought to life</h2>
+      </div>
+      <a href="#" class="work-view-all reveal reveal-delay-2" aria-label="View all case studies">View All Work →</a>
+    </div>
+    <div class="work-grid reveal">
+      <div class="work-item tall">
+        <div class="work-item-bg bg1">
+          <div class="work-shape" style="width:200px;height:200px;background:rgba(200,169,110,0.18);top:15%;left:22%;"></div>
+          <!-- FIX #12: Mockup frame -->
+          <div class="work-mockup">
+            <div class="mockup-bar"><div class="mockup-dot" style="background:#ff5f57"></div><div class="mockup-dot" style="background:#febc2e"></div><div class="mockup-dot" style="background:#28c840"></div></div>
+            <div class="mockup-screen"><div class="mockup-line" style="width:60%"></div><div class="mockup-line" style="width:90%"></div><div class="mockup-line" style="width:50%"></div><div class="mockup-line" style="width:75%;margin-top:4px"></div></div>
+          </div>
+        </div>
+        <div class="work-item-overlay">
+          <div class="work-tag">Brand Identity · Strategy</div>
+          <div class="work-title">Aurum Collective</div>
+          <div class="work-sub">Luxury retail · 2024</div>
+        </div>
+      </div>
+      <div class="work-item">
+        <div class="work-item-bg bg2">
+          <div class="work-shape" style="width:150px;height:150px;background:rgba(124,158,135,0.25);top:8%;right:8%;"></div>
+          <div class="work-mockup" style="width:50%">
+            <div class="mockup-bar"><div class="mockup-dot" style="background:#ff5f57"></div><div class="mockup-dot" style="background:#febc2e"></div><div class="mockup-dot" style="background:#28c840"></div></div>
+            <div class="mockup-screen"><div class="mockup-line" style="width:80%"></div><div class="mockup-line" style="width:55%"></div></div>
+          </div>
+        </div>
+        <div class="work-item-overlay">
+          <div class="work-tag">Digital Experience</div>
+          <div class="work-title">Verdant Health</div>
+          <div class="work-sub">Wellness tech · 2024</div>
+        </div>
+      </div>
+      <div class="work-item">
+        <div class="work-item-bg bg3">
+          <div class="work-shape" style="width:180px;height:180px;background:rgba(100,80,200,0.18);bottom:0;right:0;"></div>
+        </div>
+        <div class="work-item-overlay">
+          <div class="work-tag">Campaign · Content</div>
+          <div class="work-title">Novatek Labs</div>
+          <div class="work-sub">Deep tech · 2023</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS — FIX #16: WCAG AA contrast on cream bg -->
+<section class="section process-section" id="process" aria-labelledby="processHeading">
+  <div class="process">
+    <div class="section-tag reveal">How We Work</div>
+    <h2 id="processHeading" class="reveal reveal-delay-1">A process built<br>for <em>precision</em></h2>
+    <div class="process-steps">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-connector" aria-hidden="true"></div>
+        <div class="step-num" aria-hidden="true">01</div>
+        <h3>Discover</h3>
+        <p>We immerse ourselves in your world — your business, your customers, your competitors, and your ambitions.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-connector" aria-hidden="true"></div>
+        <div class="step-num" aria-hidden="true">02</div>
+        <h3>Define</h3>
+        <p>From insight to strategy. We crystallise your brand positioning, voice, and the creative direction that sets you apart.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-connector" aria-hidden="true"></div>
+        <div class="step-num" aria-hidden="true">03</div>
+        <h3>Design</h3>
+        <p>Strategy becomes craft. We create, iterate, and refine until every element is precisely right.</p>
+      </div>
+      <div class="step reveal reveal-delay-4">
+        <div class="step-num" aria-hidden="true">04</div>
+        <h3>Deploy</h3>
+        <p>Flawless execution across every touchpoint — launching with precision and measuring what matters.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM — FIX #31: New "why us" section -->
+<section class="section" id="team" aria-labelledby="teamHeading">
+  <div class="team-section">
+    <div class="section-tag reveal">The People</div>
+    <h2 id="teamHeading" class="reveal reveal-delay-1">Built by the<br>best in the <em>field</em></h2>
+    <p class="reveal reveal-delay-2">Our team brings together award-winning talent from the world's leading agencies, studios, and tech companies.</p>
+    <div class="team-grid">
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#c8a96e,#a87c40)">N</div>
+        <div class="team-name">Nadia Osei</div>
+        <div class="team-role">Founder & CCO</div>
+        <div class="team-bio">15 years shaping iconic brands at Wieden+Kennedy and BBDO before founding LUMA in 2015.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#7c9e87,#4a7a5a)">J</div>
+        <div class="team-name">James Adeyemi</div>
+        <div class="team-role">Head of Strategy</div>
+        <div class="team-bio">Former strategist at McKinsey & Co. Bridges data-driven insight with human-centred storytelling.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#8ba3c8,#4a6a9e)">S</div>
+        <div class="team-name">Suki Tanaka</div>
+        <div class="team-role">Design Director</div>
+        <div class="team-bio">Ex-Apple design team. Obsessed with the intersection of beauty, function, and brand meaning.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-4">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#c87c9e,#9e4a70)">R</div>
+        <div class="team-name">Rafael Moreno</div>
+        <div class="team-role">Head of Digital</div>
+        <div class="team-bio">Built digital experiences for Fortune 500s. Leads our engineering and interactive design practice.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS — FIX #4: pause on hover/tab-hide, manual nav resets timer -->
+<section class="section" aria-labelledby="testimonialsHeading">
+  <div class="testimonials">
+    <div class="section-tag reveal">Client Stories</div>
+    <h2 id="testimonialsHeading" class="reveal reveal-delay-1">Words from those<br>who <em>trusted us</em></h2>
+    <div class="testimonial-carousel reveal reveal-delay-2" id="testimonialCarousel" aria-live="polite">
+      <div class="testimonial-slide active" role="group" aria-label="Testimonial 1 of 3">
+        <div class="testimonial-quote">"LUMA didn't just redesign our brand — they fundamentally changed how the world perceives us. Revenue grew 340% in the first year after launch."</div>
+        <div class="testimonial-author"><div class="author-avatar" aria-hidden="true">S</div><div class="author-info"><div class="author-name">Sarah Chen</div><div class="author-role">CEO, Aurum Collective</div></div></div>
+      </div>
+      <div class="testimonial-slide" role="group" aria-label="Testimonial 2 of 3">
+        <div class="testimonial-quote">"The team at LUMA operates at a level I've rarely encountered. Their strategic thinking paired with creative brilliance is genuinely rare."</div>
+        <div class="testimonial-author"><div class="author-avatar" aria-hidden="true">M</div><div class="author-info"><div class="author-name">Marcus Williams</div><div class="author-role">CMO, Verdant Health</div></div></div>
+      </div>
+      <div class="testimonial-slide" role="group" aria-label="Testimonial 3 of 3">
+        <div class="testimonial-quote">"Working with LUMA was transformative. They took our complex technology story and made it irresistible to investors and customers alike."</div>
+        <div class="testimonial-author"><div class="author-avatar" aria-hidden="true">A</div><div class="author-info"><div class="author-name">Aiko Tanaka</div><div class="author-role">Founder, Novatek Labs</div></div></div>
+      </div>
+      <!-- FIX #10: Dots are <button> elements with full aria support -->
+      <div class="carousel-dots" role="tablist" aria-label="Testimonial navigation">
+        <button type="button" class="dot active" role="tab" aria-selected="true" aria-label="Testimonial 1" onclick="goToSlide(0)"></button>
+        <button type="button" class="dot" role="tab" aria-selected="false" aria-label="Testimonial 2" onclick="goToSlide(1)"></button>
+        <button type="button" class="dot" role="tab" aria-selected="false" aria-label="Testimonial 3" onclick="goToSlide(2)"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA — FIX #30: Full validated contact form -->
+<section class="section cta-section" id="contact" aria-labelledby="contactHeading">
+  <div class="cta-bg" aria-hidden="true"></div>
+  <div class="cta-inner">
+    <div class="section-tag reveal">Let's Create Together</div>
+    <h2 id="contactHeading" class="reveal reveal-delay-1">Ready to build<br>something <em>iconic?</em></h2>
+    <p class="reveal reveal-delay-2">Tell us about your vision. We'll show you what's possible.</p>
+    <div class="contact-form reveal reveal-delay-3" id="contactForm">
+      <div class="form-row">
+        <div class="form-field"><label for="fname">First Name</label><input type="text" id="fname" placeholder="Jane" autocomplete="given-name"></div>
+        <div class="form-field"><label for="lname">Last Name</label><input type="text" id="lname" placeholder="Smith" autocomplete="family-name"></div>
+      </div>
+      <div class="form-field">
+        <label for="cemail">Email Address</label>
+        <input type="email" id="cemail" placeholder="jane@company.com" autocomplete="email">
+        <span class="form-error" id="emailError" role="alert">Please enter a valid email address.</span>
+      </div>
+      <div class="form-field">
+        <label for="service">Service Interested In</label>
+        <select id="service">
+          <option value="" disabled selected>Select a service…</option>
+          <option>Brand Strategy</option>
+          <option>Visual Identity</option>
+          <option>Digital Experience</option>
+          <option>Campaign Strategy</option>
+          <option>Content & Motion</option>
+          <option>Growth Marketing</option>
+          <option>Full-Service Partnership</option>
+        </select>
+      </div>
+      <div class="form-field form-textarea">
+        <label for="message">Tell Us About Your Project</label>
+        <textarea id="message" placeholder="Share your goals, timeline, and any key details…" rows="4"></textarea>
+      </div>
+      <button type="button" class="form-submit" onclick="handleContactForm()">Send Message →</button>
+    </div>
+    <div class="form-success" id="formSuccess" role="status">
+      <h3>Message Received ✦</h3>
+      <p>Thank you for reaching out. A member of our team will be in touch within 24 hours.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER — FIX #17: dynamic year; FIX #18: stroke-based SVGs -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">LUM<span>A</span></div>
+      <p>A creative agency dedicated to building brands that move people and move markets.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Brand Strategy</a></li>
+        <li><a href="#services">Visual Identity</a></li>
+        <li><a href="#services">Digital Experience</a></li>
+        <li><a href="#services">Campaigns</a></li>
+        <li><a href="#services">Motion & Content</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#work">Our Work</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#">Journal</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:hello@luma.studio">hello@luma.studio</a></li>
+        <li><a href="#">New York, NY</a></li>
+        <li><a href="#">London, UK</a></li>
+        <li><a href="#">Tokyo, JP</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© <span id="copyrightYear"></span> LUMA Studio. All rights reserved.</p>
+    <div class="footer-social">
+      <!-- FIX #18: stroke-based SVG icons -->
+      <a href="#" class="social-link" aria-label="Follow LUMA on Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="rgba(247,245,242,0.6)" stroke="none"/></svg>
+      </a>
+      <a href="#" class="social-link" aria-label="Follow LUMA on LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="#" class="social-link" aria-label="Follow LUMA on X">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // FIX #17: Dynamic copyright year
+  document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+
+  // FIX #3: Custom cursor — fine pointer devices only
+  const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+
+  if (isFinePointer) {
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animateCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+    document.querySelectorAll('a, button, .service-card, .work-item, .step, .team-card').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+  }
+
+  // FIX #25: Particles — skip on reduced-motion, fewer on mobile
+  if (!prefersReduced) {
+    const container = document.getElementById('particles');
+    const count = window.innerWidth < 768 ? 7 : 15;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = 1 + Math.random() * 2.5;
+      p.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;animation-duration:${9+Math.random()*11}s;animation-delay:${Math.random()*10}s`;
+      container.appendChild(p);
+    }
+  }
+
+  // Scroll reveal — clean IntersectionObserver with fallback
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => obs.observe(r));
+  } else {
+    reveals.forEach(r => r.classList.add('visible'));
+  }
+
+  // FIX #4: Carousel — pauses on hover & hidden tab, resets on manual nav
+  let currentSlide = 0;
+  let carouselTimer;
+  const slides = document.querySelectorAll('.testimonial-slide');
+  const dots = document.querySelectorAll('.dot');
+  const carousel = document.getElementById('testimonialCarousel');
+
+  function goToSlide(n) {
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    dots[currentSlide].setAttribute('aria-selected', 'false');
+    currentSlide = n;
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+    dots[currentSlide].setAttribute('aria-selected', 'true');
+    clearInterval(carouselTimer);
+    if (!prefersReduced) startCarousel();
+  }
+
+  function startCarousel() {
+    carouselTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), 5000);
+  }
+
+  carousel.addEventListener('mouseenter', () => clearInterval(carouselTimer));
+  carousel.addEventListener('mouseleave', () => { if (!prefersReduced) startCarousel(); });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) clearInterval(carouselTimer);
+    else if (!prefersReduced) startCarousel();
+  });
+  if (!prefersReduced) startCarousel();
+
+  // FIX #1: Single merged scroll listener with rAF throttle
+  // FIX #9: Scroll spy for active nav links
+  // FIX #24: rAF throttle prevents layout thrashing
+  let ticking = false;
+  const mainNav = document.getElementById('mainNav');
+  const heroH1 = document.querySelector('.hero h1');
+  const heroBg = document.querySelector('.hero-bg');
+  const sections = document.querySelectorAll('main section[id]');
+  const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const sy = window.scrollY;
+        // Nav shrink
+        mainNav.classList.toggle('scrolled', sy > 60);
+        // FIX #9: Scroll spy
+        let active = '';
+        sections.forEach(s => { if (sy >= s.offsetTop - 130) active = s.id; });
+        navAnchors.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
+        // Hero parallax — only when in viewport, skip reduced-motion
+        if (!prefersReduced && sy < window.innerHeight) {
+          if (heroH1) heroH1.style.transform = `translateY(${sy * 0.14}px)`;
+          if (heroBg) heroBg.style.transform = `translateY(${sy * 0.09}px)`;
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // FIX #6: Mobile hamburger toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Service card 3D tilt — only for fine-pointer + no reduced motion
+  if (isFinePointer && !prefersReduced) {
+    document.querySelectorAll('.service-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        card.style.transform = `perspective(800px) rotateX(${-y*0.028}deg) rotateY(${x*0.028}deg) translateZ(4px)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+    // Work item parallax
+    document.querySelectorAll('.work-item').forEach(item => {
+      item.addEventListener('mousemove', e => {
+        const r = item.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        const bg = item.querySelector('.work-item-bg');
+        if (bg) bg.style.transform = `scale(1.06) translate(${x*10}px,${y*10}px)`;
+      });
+      item.addEventListener('mouseleave', () => {
+        const bg = item.querySelector('.work-item-bg');
+        if (bg) bg.style.transform = '';
+      });
+    });
+  }
+
+
+  // Clear inline validation styles when user interacts with fields
+  ['fname','lname','cemail','service','message'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => {
+      el.style.outline = '';
+      if (el.closest('.form-field')) el.closest('.form-field').style.borderColor = '';
+    });
+  });
+
+  // FIX #29/#30: Full contact form validation with proper email regex
+  function handleContactForm() {
+    const fname = document.getElementById('fname').value.trim();
+    const lname = document.getElementById('lname').value.trim();
+    const email = document.getElementById('cemail').value.trim();
+    const service = document.getElementById('service').value;
+    const message = document.getElementById('message').value.trim();
+    const emailError = document.getElementById('emailError');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    emailError.classList.remove('visible');
+    if (!fname || !lname) { document.getElementById('fname').style.outline = '1px solid #e87c7c'; document.getElementById('lname').style.outline = '1px solid #e87c7c'; document.getElementById('fname').focus(); return; }
+    if (!emailRegex.test(email)) { emailError.classList.add('visible'); document.getElementById('cemail').focus(); return; }
+    if (!service) { document.getElementById('service').closest('.form-field').style.borderColor = '#e87c7c'; document.getElementById('service').focus(); return; }
+    if (!message) { document.getElementById('message').closest('.form-field').style.borderColor = '#e87c7c'; document.getElementById('message').focus(); return; }
+
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').classList.add('visible');
+  }
+</script>
+</body>
+</html>
