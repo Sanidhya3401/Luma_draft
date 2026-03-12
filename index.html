@@ -519,6 +519,119 @@
     .team-grid { grid-template-columns: 1fr; }
     .work-item { min-height: 220px; }
   }
+
+  /* ── POPUP ─────────────────────────────────────────────────────────────── */
+  .popup-backdrop {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(4,4,4,0.75);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .popup-backdrop.visible { opacity: 1; pointer-events: all; }
+
+  .popup {
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 48px 44px 40px;
+    max-width: 520px; width: 100%;
+    position: relative;
+    transform: translateY(24px) scale(0.97);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    max-height: 90vh; overflow-y: auto;
+  }
+  .popup-backdrop.visible .popup { transform: translateY(0) scale(1); }
+
+  .popup-close {
+    position: absolute; top: 20px; right: 20px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(247,245,242,0.5); font-size: 1.1rem; line-height: 1;
+    transition: all 0.2s;
+  }
+  .popup-close:hover { background: rgba(255,255,255,0.12); color: var(--white); }
+
+  .popup-eyebrow {
+    font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .popup-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 20px; height: 1px; background: var(--accent);
+  }
+  .popup h2 {
+    font-family: var(--serif); font-size: 1.9rem; font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 8px;
+  }
+  .popup h2 em { font-style: italic; color: var(--accent); }
+  .popup-sub {
+    font-size: 0.88rem; color: rgba(247,245,242,0.45);
+    line-height: 1.7; margin-bottom: 28px;
+  }
+
+  .popup .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .popup .form-field {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 10px; padding: 12px 16px;
+    display: flex; flex-direction: column; gap: 3px;
+    transition: border-color 0.3s;
+    margin-bottom: 10px;
+  }
+  .popup .form-field:focus-within { border-color: rgba(200,169,110,0.5); }
+  .popup .form-field label {
+    font-size: 0.63rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim);
+  }
+  .popup .form-field input,
+  .popup .form-field select,
+  .popup .form-field textarea {
+    background: none; border: none; outline: none;
+    color: var(--white); font-family: var(--sans); font-size: 0.88rem; resize: none;
+  }
+  .popup .form-field input::placeholder,
+  .popup .form-field textarea::placeholder { color: rgba(247,245,242,0.2); }
+  .popup .form-field select { color: rgba(247,245,242,0.7); }
+  .popup .form-field select option { background: #1a1a1a; color: var(--white); }
+  .popup .form-textarea { min-height: 80px; }
+  .popup .form-error { color: #e87c7c; font-size: 0.74rem; margin-top: 2px; display: none; }
+  .popup .form-error.visible { display: block; }
+
+  .popup-submit {
+    width: 100%; background: var(--accent); color: var(--black);
+    border: none; border-radius: 100px; padding: 14px 28px;
+    font-family: var(--sans); font-size: 0.88rem; font-weight: 500;
+    transition: transform 0.3s, box-shadow 0.3s; margin-top: 6px;
+  }
+  .popup-submit:hover { transform: scale(1.02); box-shadow: 0 10px 28px rgba(200,169,110,0.3); }
+
+  .popup-success {
+    text-align: center; padding: 20px 0 8px;
+    display: none;
+  }
+  .popup-success.visible { display: block; }
+  .popup-success-icon { font-size: 2.5rem; margin-bottom: 16px; }
+  .popup-success h3 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 10px; color: var(--accent2); }
+  .popup-success p { font-size: 0.88rem; color: rgba(247,245,242,0.5); line-height: 1.7; }
+
+  .popup-dismiss {
+    display: block; text-align: center; margin-top: 16px;
+    font-size: 0.75rem; color: rgba(247,245,242,0.25);
+    background: none; border: none; width: 100%;
+    transition: color 0.2s;
+  }
+  .popup-dismiss:hover { color: rgba(247,245,242,0.5); }
+
+  @media (max-width: 480px) {
+    .popup { padding: 36px 24px 28px; border-radius: 18px; }
+    .popup .form-row { grid-template-columns: 1fr; }
+    .popup h2 { font-size: 1.5rem; }
+  }
+
 </style>
 </head>
 <body>
@@ -871,6 +984,55 @@
   </div>
 </section>
 
+
+<!-- ── POPUP: 60-second query collection ──────────────────────────────────── -->
+<div class="popup-backdrop" id="popupBackdrop" role="dialog" aria-modal="true" aria-labelledby="popupHeading">
+  <div class="popup" id="popupBox">
+    <button type="button" class="popup-close" id="popupClose" aria-label="Close popup">&#x2715;</button>
+
+    <div id="popupFormWrap">
+      <div class="popup-eyebrow">Limited availability — 2026</div>
+      <h2 id="popupHeading">Got a project<br>in <em>mind?</em></h2>
+      <p class="popup-sub">We take on a select number of new partnerships each quarter. Tell us about yours and we'll be in touch within 24 hours.</p>
+
+      <div class="form-row">
+        <div class="form-field"><label for="p-fname">First Name</label><input type="text" id="p-fname" placeholder="Jane" autocomplete="given-name"></div>
+        <div class="form-field"><label for="p-lname">Last Name</label><input type="text" id="p-lname" placeholder="Smith" autocomplete="family-name"></div>
+      </div>
+      <div class="form-field">
+        <label for="p-email">Email Address</label>
+        <input type="email" id="p-email" placeholder="jane@company.com" autocomplete="email">
+        <span class="form-error" id="p-emailError" role="alert">Please enter a valid email address.</span>
+      </div>
+      <div class="form-field">
+        <label for="p-service">Service Interested In</label>
+        <select id="p-service">
+          <option value="" disabled selected>Select a service…</option>
+          <option>Brand Strategy</option>
+          <option>Visual Identity</option>
+          <option>Digital Experience</option>
+          <option>Campaign Strategy</option>
+          <option>Content & Motion</option>
+          <option>Growth Marketing</option>
+          <option>Full-Service Partnership</option>
+        </select>
+      </div>
+      <div class="form-field form-textarea">
+        <label for="p-message">Tell Us About Your Project</label>
+        <textarea id="p-message" placeholder="Share your goals, timeline, and any key details…" rows="3"></textarea>
+      </div>
+      <button type="button" class="popup-submit" onclick="handlePopupForm()">Send Message →</button>
+      <button type="button" class="popup-dismiss" onclick="dismissPopup(true)">Not right now — maybe later</button>
+    </div>
+
+    <div class="popup-success" id="popupSuccess" role="status">
+      <div class="popup-success-icon">✦</div>
+      <h3>We'll be in touch</h3>
+      <p>Thanks for reaching out. A member of our team will contact you within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
 </main>
 
 <!-- FOOTER — FIX #17: dynamic year; FIX #18: stroke-based SVGs -->
@@ -903,7 +1065,7 @@
     <div class="footer-col">
       <h4>Contact</h4>
       <ul>
-        <li><a href="mailto:hello@luma.studio">hello@luma.studio</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#95fdf0f9f9fad5f9e0f8f4bbe6e1e0f1fcfa"><span class="__cf_email__" data-cfemail="80e8e5ececefc0ecf5ede1aef3f4f5e4e9ef">[email&#160;protected]</span></a></li>
         <li><a href="#">New York, NY</a></li>
         <li><a href="#">London, UK</a></li>
         <li><a href="#">Tokyo, JP</a></li>
@@ -927,7 +1089,7 @@
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // FIX #17: Dynamic copyright year
   document.getElementById('copyrightYear').textContent = new Date().getFullYear();
 
@@ -1113,6 +1275,88 @@
     document.getElementById('contactForm').style.display = 'none';
     document.getElementById('formSuccess').classList.add('visible');
   }
+
+  // ── POPUP: fires after 60s, once per session ──────────────────────────────
+  (function() {
+    if (sessionStorage.getItem('popupDismissed')) return;
+
+    const backdrop = document.getElementById('popupBackdrop');
+    const popupClose = document.getElementById('popupClose');
+    let popupTimer;
+
+    function openPopup() {
+      backdrop.classList.add('visible');
+      const focusable = backdrop.querySelectorAll('button, input, select, textarea');
+      if (focusable.length) focusable[0].focus();
+    }
+
+    function dismissPopup(byUser) {
+      backdrop.classList.remove('visible');
+      clearTimeout(popupTimer);
+      if (byUser) sessionStorage.setItem('popupDismissed', '1');
+    }
+    window.dismissPopup = dismissPopup;
+
+    popupTimer = setTimeout(openPopup, 60000);
+
+    backdrop.addEventListener('click', e => {
+      if (e.target === backdrop) dismissPopup(true);
+    });
+
+    popupClose.addEventListener('click', () => dismissPopup(true));
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && backdrop.classList.contains('visible')) dismissPopup(true);
+    });
+
+    window.handlePopupForm = function() {
+      const fname   = document.getElementById('p-fname').value.trim();
+      const lname   = document.getElementById('p-lname').value.trim();
+      const email   = document.getElementById('p-email').value.trim();
+      const service = document.getElementById('p-service').value;
+      const message = document.getElementById('p-message').value.trim();
+      const emailErr = document.getElementById('p-emailError');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      emailErr.classList.remove('visible');
+      ['p-fname','p-lname','p-email','p-service','p-message'].forEach(id => {
+        const el = document.getElementById(id);
+        el.style.outline = '';
+        if (el.closest('.form-field')) el.closest('.form-field').style.borderColor = '';
+      });
+
+      if (!fname || !lname) {
+        document.getElementById('p-fname').style.outline = '1px solid #e87c7c';
+        document.getElementById('p-fname').focus(); return;
+      }
+      if (!emailRegex.test(email)) {
+        emailErr.classList.add('visible');
+        document.getElementById('p-email').focus(); return;
+      }
+      if (!service) {
+        document.getElementById('p-service').closest('.form-field').style.borderColor = '#e87c7c';
+        document.getElementById('p-service').focus(); return;
+      }
+      if (!message) {
+        document.getElementById('p-message').closest('.form-field').style.borderColor = '#e87c7c';
+        document.getElementById('p-message').focus(); return;
+      }
+
+      document.getElementById('popupFormWrap').style.display = 'none';
+      document.getElementById('popupSuccess').classList.add('visible');
+      sessionStorage.setItem('popupDismissed', '1');
+      setTimeout(() => dismissPopup(false), 3000);
+    };
+
+    ['p-fname','p-lname','p-email','p-service','p-message'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => {
+        el.style.outline = '';
+        if (el.closest('.form-field')) el.closest('.form-field').style.borderColor = '';
+        document.getElementById('p-emailError').classList.remove('visible');
+      });
+    });
+  })();
 </script>
 </body>
 </html>
